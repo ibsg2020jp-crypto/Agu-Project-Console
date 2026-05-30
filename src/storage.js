@@ -1,6 +1,7 @@
 const DATA_KEY = 'projectConsoleData';
 const SETTINGS_KEY = 'projectConsoleSettings';
 const TEMPLATES_KEY = 'projectConsoleTemplates';
+const SEED_VERSION = 1;
 
 const seededProjects = [
   {
@@ -20,6 +21,7 @@ const seededProjects = [
 ];
 
 const defaultData = {
+  seedVersion: SEED_VERSION,
   projects: seededProjects,
   lastOpenedProjectId: 'block-breaker',
   apiCache: {
@@ -43,13 +45,17 @@ const defaultSettings = {
   rankingLimit: 10
 };
 
+function clone(value) {
+  return JSON.parse(JSON.stringify(value));
+}
+
 function readJson(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
-    return raw ? { ...fallback, ...JSON.parse(raw) } : structuredClone(fallback);
+    return raw ? { ...clone(fallback), ...JSON.parse(raw) } : clone(fallback);
   } catch (error) {
     console.warn(`Failed to read ${key}`, error);
-    return structuredClone(fallback);
+    return clone(fallback);
   }
 }
 
@@ -57,11 +63,31 @@ function writeJson(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
+function applySeedMigration(data) {
+  if ((data.seedVersion || 0) >= SEED_VERSION) return data;
+
+  const existingIds = new Set(data.projects.map((project) => project.projectId));
+  const missingSeeds = seededProjects.filter((project) => !existingIds.has(project.projectId));
+
+  if (missingSeeds.length) {
+    data.projects = [...missingSeeds, ...data.projects];
+    data.lastOpenedProjectId = data.lastOpenedProjectId || missingSeeds[0].projectId;
+  }
+
+  data.apiCache = {
+    ...defaultData.apiCache,
+    ...data.apiCache
+  };
+  data.seedVersion = SEED_VERSION;
+  writeJson(DATA_KEY, data);
+  return data;
+}
+
 export function loadData() {
   const data = readJson(DATA_KEY, defaultData);
   data.projects = Array.isArray(data.projects) ? data.projects : [];
   data.apiCache = data.apiCache || {};
-  return data;
+  return applySeedMigration(data);
 }
 
 export function saveData(data) {
@@ -100,7 +126,7 @@ export function importAll(payload) {
   }
   const data = payload.data || payload;
   const projects = Array.isArray(data.projects) ? data.projects : [];
-  saveData({ ...defaultData, ...data, projects });
+  saveData({ ...defaultData, ...data, projects, seedVersion: SEED_VERSION });
   if (payload.settings) saveSettings({ ...defaultSettings, ...payload.settings });
   if (payload.templates) saveTemplates(payload.templates);
 }
