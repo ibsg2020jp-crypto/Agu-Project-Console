@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agu Project Console</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">GitHub Pages / localStorage / Apps Script JSONP</p>
+      <h1>Agu Project Console</h1>
+      <p class="lead">Webゲーム・WebアプリのURL、ランキング、プレイヤー状況をまとめて管理します。</p>
+    </div>
+    <button id="themeToggle" class="ghost-button" type="button">テーマ切替</button>
+  </header>
+
+  <nav class="tab-nav" aria-label="画面切り替え">
+    <button class="tab-button active" data-view="dashboard">ダッシュボード</button>
+    <button class="tab-button" data-view="projects">プロジェクト一覧</button>
+    <button class="tab-button" data-view="form">追加・編集</button>
+    <button class="tab-button" data-view="templates">テンプレート</button>
+    <button class="tab-button" data-view="settings">設定</button>
+  </nav>
+
+  <main>
+    <section id="dashboardView" class="view active-view"></section>
+    <section id="projectsView" class="view"></section>
+    <section id="formView" class="view"></section>
+    <section id="detailView" class="view"></section>
+    <section id="templatesView" class="view"></section>
+    <section id="settingsView" class="view"></section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
