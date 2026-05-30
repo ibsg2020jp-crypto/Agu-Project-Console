@@ -2,10 +2,40 @@ const DATA_KEY = 'projectConsoleData';
 const SETTINGS_KEY = 'projectConsoleSettings';
 const TEMPLATES_KEY = 'projectConsoleTemplates';
 
+const seededProjects = [
+  {
+    projectId: 'block-breaker',
+    projectName: 'ブロック崩し',
+    description: 'ブラウザで遊べる、スマホ対応のシンプルなブロック崩しゲーム。スイッチやワープなどのギミック、スコア、評価ランク、ベストタイム、実績保存に対応。',
+    genre: 'ゲーム',
+    githubRepoUrl: 'https://github.com/ibsg2020jp-crypto/Block-Breaker',
+    pagesUrl: 'https://ibsg2020jp-crypto.github.io/Block-Breaker/',
+    spreadsheetUrl: '',
+    appsScriptUrl: '',
+    status: '公開中',
+    createdAt: '2026-05-30T00:00:00.000Z',
+    updatedAt: '2026-05-30T00:00:00.000Z',
+    memo: '初期サンプルデータ。ランキング用スプレッドシートURLとApps Script URLは未登録。'
+  }
+];
+
 const defaultData = {
-  projects: [],
-  lastOpenedProjectId: null,
-  apiCache: {}
+  projects: seededProjects,
+  lastOpenedProjectId: 'block-breaker',
+  apiCache: {
+    'block-breaker': {
+      stats: {
+        totalPlayers: 0,
+        activeToday: 0,
+        active7d: 0,
+        active30d: 0,
+        totalScores: 0,
+        lastScoreAt: null
+      },
+      ranking: [],
+      lastError: ''
+    }
+  }
 };
 
 const defaultSettings = {
@@ -16,10 +46,10 @@ const defaultSettings = {
 function readJson(key, fallback) {
   try {
     const raw = localStorage.getItem(key);
-    return raw ? { ...fallback, ...JSON.parse(raw) } : { ...fallback };
+    return raw ? { ...fallback, ...JSON.parse(raw) } : structuredClone(fallback);
   } catch (error) {
     console.warn(`Failed to read ${key}`, error);
-    return { ...fallback };
+    return structuredClone(fallback);
   }
 }
 
