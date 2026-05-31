@@ -2,6 +2,12 @@
 
 Webゲーム・Webアプリを複数管理するための、GitHub Pagesで動く静的Webアプリです。
 
+## Webアプリ
+
+以下のリンクから開けます。
+
+[▶ Agu Project Console を開く](https://ibsg2020jp-crypto.github.io/Agu-Project-Console/)
+
 ## できること
 
 - プロジェクト情報の追加・編集・削除
@@ -17,7 +23,7 @@ Webゲーム・Webアプリを複数管理するための、GitHub Pagesで動�
 ## 使い方
 
 1. GitHub Pagesでこのリポジトリを公開する
-2. ブラウザで開く
+2. [Agu Project Console](https://ibsg2020jp-crypto.github.io/Agu-Project-Console/) をブラウザで開く
 3. 「追加・編集」からプロジェクトを登録する
 4. Apps Script URLを登録する
 5. 詳細画面で「ランキング取得」または「接続テスト」を押す
@@ -32,11 +38,9 @@ GitHubのリポジトリ画面で以下を設定してください。
 4. Branchを `main`、フォルダを `/root` にする
 5. Save
 
-公開URLの例：
+公開URL：
 
-```text
-https://ibsg2020jp-crypto.github.io/Agu-Project-Console/
-```
+[https://ibsg2020jp-crypto.github.io/Agu-Project-Console/](https://ibsg2020jp-crypto.github.io/Agu-Project-Console/)
 
 ## データ保存について
 
